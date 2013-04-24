@@ -4061,10 +4061,10 @@ W = angled&lt;p&gt;
 <library name="n39">
 <packages>
 <package name="PSW_5">
-<pad name="+12V" x="-7.62" y="-6.1" drill="1.4" shape="long" rot="R90"/>
+<pad name="+12V" x="7.62" y="-6.1" drill="1.4" shape="long" rot="R90"/>
 <pad name="GND1" x="-2.54" y="-6.1" drill="1.4" shape="long" rot="R90"/>
 <pad name="GND2" x="2.54" y="-6.1" drill="1.4" shape="long" rot="R90"/>
-<pad name="-5V" x="7.62" y="-6.1" drill="1.4" shape="long" rot="R90"/>
+<pad name="-5V" x="-7.62" y="-6.1" drill="1.4" shape="long" rot="R90"/>
 <wire x1="-11.6" y1="-6.1" x2="11.6" y2="-6.1" width="0.127" layer="21"/>
 <wire x1="11.6" y1="-6.1" x2="11.6" y2="6.1" width="0.127" layer="21"/>
 <wire x1="11.6" y1="6.1" x2="-11.6" y2="6.1" width="0.127" layer="21"/>
@@ -4207,8 +4207,8 @@ http://www.reichelt.de/Floppy-Powerstecker/PSW-5/3/index.html?;ACTION=3;LA=446;A
 <instance part="SV1" gate="G$1" x="134.62" y="55.88" rot="R180"/>
 <instance part="SUPPLY4" gate="G$1" x="116.84" y="53.34" rot="R90"/>
 <instance part="GND2" gate="1" x="124.46" y="45.72"/>
-<instance part="GND4" gate="1" x="116.84" y="-7.62" rot="R180"/>
-<instance part="SUPPLY6" gate="G$1" x="114.3" y="-22.86" rot="R90"/>
+<instance part="GND4" gate="1" x="116.84" y="-22.86"/>
+<instance part="SUPPLY6" gate="G$1" x="114.3" y="-7.62" rot="R90"/>
 <instance part="U$1" gate="G$1" x="129.54" y="-15.24" rot="R90"/>
 <instance part="SV2" gate="G$1" x="134.62" y="25.4" rot="R180"/>
 <instance part="SUPPLY8" gate="G$1" x="116.84" y="22.86" rot="R90"/>
@@ -4263,8 +4263,8 @@ http://www.reichelt.de/Floppy-Powerstecker/PSW-5/3/index.html?;ACTION=3;LA=446;A
 </segment>
 <segment>
 <pinref part="SUPPLY6" gate="G$1" pin="VCC"/>
-<pinref part="U$1" gate="G$1" pin="+12V"/>
-<wire x1="116.84" y1="-22.86" x2="129.54" y2="-22.86" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="-5V"/>
+<wire x1="116.84" y1="-7.62" x2="129.54" y2="-7.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -4283,7 +4283,7 @@ http://www.reichelt.de/Floppy-Powerstecker/PSW-5/3/index.html?;ACTION=3;LA=446;A
 <pinref part="U$1" gate="G$1" pin="GND2"/>
 <wire x1="116.84" y1="-12.7" x2="129.54" y2="-12.7" width="0.1524" layer="91"/>
 <pinref part="GND4" gate="1" pin="GND"/>
-<wire x1="116.84" y1="-10.16" x2="116.84" y2="-12.7" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="-20.32" x2="116.84" y2="-12.7" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="GND1"/>
 <wire x1="129.54" y1="-17.78" x2="116.84" y2="-17.78" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="-12.7" x2="116.84" y2="-17.78" width="0.1524" layer="91"/>
