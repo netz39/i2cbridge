@@ -13,15 +13,15 @@ module support(x, y, ang, length, height) {
 			);
 			hull() {
 				translate([length, -border/2, 0])
-					cylinder(r=border/2, h=7);
+					cylinder(r=border/2, h=height+2);
 				translate([-border/2, -border/2, 0])
-					cylinder(r=border/2, h=7);
+					cylinder(r=border/2, h=height+2);
 			}
 			hull() {
 				translate([-border/2, length, 0])
-					cylinder(r=border/2, h=7);
+					cylinder(r=border/2, h=height+2);
 				translate([-border/2, -border/2, 0])
-					cylinder(r=border/2, h=7);
+					cylinder(r=border/2, h=height+2);
 			}
 		}
 }
@@ -29,34 +29,47 @@ module support(x, y, ang, length, height) {
 module snapper(x,y, height, length, ang) {
 	translate([x,y,0])
 	rotate(a=ang)
-	translate([-length/2,-1,0])
-		cube(size=[length,1,height]);
+	translate([-length/2,-2,0])
+		cube(size=[length,2,height]);
 
-	translate([x,y,height-1])
+	translate([x,y,height-1.5])
 	rotate(a=ang)
 	translate([-length/2,0,0])
 		difference() {
-			cube(size=[length,1,1]);
-			translate([0,1,0])
+			cube(size=[length,2,1.5]);
+			translate([0,2,0])
 			rotate([45,0,0])
-				cube(size=[length,2,2]);
+				cube(size=[length,4,4]);
 		}
 }
 
 module trove(xsize, ysize) {
-	height = 7;
+	height = 8;
 	border = 2;
 
 	translate([border,border,0])
 	union() {
 		// frame
-		translate([-border/2, -border/2, 0])
-			cube(size=[xsize+border, ysize+border, 1]);
+		difference() {
+			hull() {
+				translate([0,0,0])
+					cylinder(r=border, h=2);
+				translate([xsize,0,0])
+					cylinder(r=border, h=2);
+				translate([0,ysize,0])
+					cylinder(r=border, h=2);
+				translate([xsize,ysize,0])
+					cylinder(r=border, h=2);
+			}
+			translate([0,0,1])
+				cube(size=[xsize, ysize, 1]);
+			
+		}
 /*		difference() {
 			hull() {
 				translate([0,0,0])
 					cylinder(r=border, h=height);
-				translate([xsize,,0])
+				translate([xsize,0,0])
 					cylinder(r=border, h=height);
 				translate([0,ysize,0])
 					cylinder(r=border, h=height);
@@ -81,10 +94,10 @@ module trove(xsize, ysize) {
 		support(xsize,ysize, 180, 5, 4);
 
 		//nubsies
-		//snapper(0, (ysize/2), height, 4, 270);
-		snapper(xsize, (ysize/2), height-1, 4, 90);
-		snapper((xsize/2), 0, height-1, 4, 0);
-		snapper((xsize/2), ysize, height-1, 4, 180);
+		//snapper(0, (ysize/2), height, 6, 270);
+		snapper(xsize, (ysize/2), height, 6, 90);
+		snapper((xsize/2), 0, height, 6, 0);
+		snapper((xsize/2), ysize, height, 6, 180);
 	}
 }
 
