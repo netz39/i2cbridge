@@ -81,7 +81,7 @@ module trove(xsize, ysize) {
 		support(xsize,ysize, 180, 5, 4);
 
 		//nubsies
-		snapper(0, (ysize/2), height, 4, 270);
+		//snapper(0, (ysize/2), height, 4, 270);
 		snapper(xsize, (ysize/2), height-1, 4, 90);
 		snapper((xsize/2), 0, height-1, 4, 0);
 		snapper((xsize/2), ysize, height-1, 4, 180);
