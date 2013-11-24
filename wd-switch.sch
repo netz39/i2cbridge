@@ -13101,7 +13101,7 @@ Source: www.kingbright.com</description>
 <part name="R1" library="resistor" deviceset="R-EU_" device="0207/10" value="330R"/>
 <part name="PAD1" library="wirepad" deviceset="WIREPAD" device="2,54/1,1"/>
 <part name="LED1" library="led" deviceset="LED" device="5MM"/>
-<part name="R2" library="resistor" deviceset="R-EU_" device="0207/10" value="150R"/>
+<part name="R2" library="resistor" deviceset="R-EU_" device="0207/7" value="150R"/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="C1" library="resistor" deviceset="CPOL-EU" device="E3.5-8"/>
 <part name="C2" library="resistor" deviceset="CPOL-EU" device="E3.5-8"/>
