@@ -13012,10 +13012,10 @@ Source: KYCON Sibalco USB vertical socket KUSBV.pdf</description>
 <part name="LED1" library="led" deviceset="LED" device="5MM" value="GN"/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="0207/7" value="150R"/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
-<part name="C1" library="resistor" deviceset="CPOL-EU" device="E3.5-8"/>
-<part name="C2" library="resistor" deviceset="CPOL-EU" device="E3.5-8"/>
-<part name="C3" library="resistor" deviceset="C-EU" device="025-024X044"/>
-<part name="C4" library="resistor" deviceset="C-EU" device="025-024X044"/>
+<part name="C1" library="resistor" deviceset="CPOL-EU" device="E3.5-8" value="470u"/>
+<part name="C2" library="resistor" deviceset="CPOL-EU" device="E3.5-8" value="470u"/>
+<part name="C3" library="resistor" deviceset="C-EU" device="025-024X044" value="100n"/>
+<part name="C4" library="resistor" deviceset="C-EU" device="025-024X044" value="100n"/>
 <part name="JP1" library="pinhead" deviceset="PINHD-1X1" device="" value="ON"/>
 <part name="JP2" library="pinhead" deviceset="PINHD-1X1" device="" value="OFF"/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
