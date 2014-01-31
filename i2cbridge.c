@@ -324,7 +324,6 @@ int main(int argc, char *argv[])
     
     int ret, x;
     
-    char buf[10];
     struct sockaddr_in addr_in;
     struct sockaddr_un addr_un;
     size_t addrsize;
