@@ -1,1 +1,3 @@
 i2cbridge
+client_inet
+client_unix
