@@ -88,11 +88,16 @@ int con_add(int fd)
     pfds[2+con_count].events = POLLIN;
     memset(&cons[con_count], 0, sizeof(struct con));
     con_count++;
+    
+    printf("client added [%i]\n", fd);
+    
     return 0;
 }
 
 void con_del(int num)
 {
+    printf("client removed [%i]\n", pfds[2+num].fd);
+    
     close(pfds[2+num].fd);
     
     for(; num<con_count-1; ++num)
@@ -131,6 +136,9 @@ int i2c_add(int addr)
     }
     i2cs[i2c_count].addr = addr;
     i2c_count++;
+    
+    printf("i2c device added [%hhx]\n", addr);
+    
     return 0;
 }
 
@@ -160,6 +168,9 @@ int con_request(int num)
     con->req.addr = ntohs(con->req.addr);
     con->req.reg = ntohs(con->req.reg);
     con->req.data = ntohs(con->req.data);
+    
+    printf("client request [%i]: %02hhx %02hhx %02hhx %04hx\n",
+        pfds[2+num].fd, con->req.cmd, con->req.addr, con->req.reg, con->req.data);
     
     switch((fd = i2c_add(con->req.addr)))
     {
@@ -207,6 +218,7 @@ int con_request(int num)
 
 void cleanup(int signal)
 {
+    printf("cleanup\n");
     
     if(sock_inet)
         close(sock_inet);
