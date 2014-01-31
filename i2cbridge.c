@@ -116,7 +116,7 @@ int i2c_add(int addr)
     
     for(x=0; x<i2c_count; ++x)
         if(i2cs[x].addr == addr)
-            return 0;
+            return i2cs[x].fd;
     
     if(i2c_count == i2c_cap)
     {
@@ -129,7 +129,7 @@ int i2c_add(int addr)
         i2cs = tmp;
     }
     
-    if(!(i2cs[i2c_count].fd = wiringPiI2CSetup(addr)))
+    if((i2cs[i2c_count].fd = wiringPiI2CSetup(addr)) == -1)
     {
         fprintf(stderr, "Failed to setup i2c for 0x%04hx: %s\n", addr, strerror(errno));
         return -2;
@@ -139,7 +139,7 @@ int i2c_add(int addr)
     
     printf("i2c device added [%hhx]\n", addr);
     
-    return 0;
+    return i2cs[i2c_count-1].fd;
 }
 
 int con_read(int num)
@@ -154,19 +154,18 @@ int con_read(int num)
         perror("Failed to recv");
         return -1;
     }
-    c->count += count;
+    if(!count)
+        return 2;
     
+    c->count += count;
     return c->count != sizeof(struct request);
 }
 
 int con_request(int num)
 {
     struct con *con = &cons[num];
-    int fd;
+    int fd, ret;
     
-    con->req.cmd = ntohs(con->req.cmd);
-    con->req.addr = ntohs(con->req.addr);
-    con->req.reg = ntohs(con->req.reg);
     con->req.data = ntohs(con->req.data);
     
     printf("client request [%i]: %02hhx %02hhx %02hhx %04hx\n",
@@ -187,23 +186,23 @@ int con_request(int num)
     switch(con->req.cmd)
     {
     case I2CBRIDGE_CMD_READ8:
-        con->res.data = wiringPiI2CReadReg8(fd, con->req.reg) & 0xff;
+        ret = wiringPiI2CReadReg8(fd, con->req.reg) & 0xff;
         break;
     case I2CBRIDGE_CMD_WRITE8:
-        con->res.data = wiringPiI2CWriteReg8(fd, con->req.reg, con->req.data);
+        ret = wiringPiI2CWriteReg8(fd, con->req.reg, con->req.data);
         break;
     case I2CBRIDGE_CMD_READ16:
-        con->res.data = wiringPiI2CReadReg16(fd, con->req.reg) & 0xffff;
+        ret = wiringPiI2CReadReg16(fd, con->req.reg) & 0xffff;
         break;
     case I2CBRIDGE_CMD_WRITE16:
-        con->res.data = wiringPiI2CWriteReg16(fd, con->req.reg, con->req.data);
+        ret = wiringPiI2CWriteReg16(fd, con->req.reg, con->req.data);
         break;
     default:
         con->res.status = ERROR(COMMAND);
         return -1;
     }
     
-    if(con->res.data == -1)
+    if(ret == -1)
     {
         con->res.status = ERROR(I2C);
         fprintf(stderr, "Failed to access i2c for 0x%02hhx/0x%02hhx/0x%04hx: %s\n",
@@ -212,6 +211,7 @@ int con_request(int num)
     }
     
     con->res.status = ERROR(OK);
+    con->res.data = htons(ret);
     
     return 0;
 }
