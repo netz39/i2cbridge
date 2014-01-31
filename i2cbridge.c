@@ -30,15 +30,14 @@
 #include <poll.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
-#include <sys/un.h>
+#include <linux/un.h>
 #include <arpa/inet.h>
 
 #include <wiringPiI2C.h>
 
 #include "i2cbridge.h"
 
-#define DEFAULT_BACKLOG 10
-#define DEFAULT_BUFSIZE 10
+#define BACKLOG 10
 
 #define request  i2cbridge_request
 #define response i2cbridge_response
@@ -62,6 +61,7 @@ int sock_inet, sock_unix, lock, con_count, con_cap, i2c_count, i2c_cap;
 struct pollfd *pfds;
 struct con *cons;
 struct i2c *i2cs;
+char path[UNIX_PATH_MAX];
 
 
 int con_add(int fd)
@@ -207,21 +207,20 @@ int con_request(int num)
 
 void cleanup(int signal)
 {
-    char buf[100];
     
     if(sock_inet)
         close(sock_inet);
     if(sock_unix)
     {
         close(sock_unix);
-        sprintf(buf, "%s/%s.ipc", pwd, file_unix);
-        unlink(buf);
+        snprintf(path, UNIX_PATH_MAX, "%s/%s.ipc", pwd, file_unix);
+        unlink(path);
     }
     if(lock)
     {
         close(lock);
-        sprintf(buf, "%s/pid", pwd);
-        unlink(buf);
+        snprintf(path, UNIX_PATH_MAX, "%s/pid", pwd);
+        unlink(path);
     }
     
     if(pfds && cons)
@@ -258,7 +257,7 @@ int setup_socket_inet(int port, struct in_addr inaddr)
         return 7;
     }
     
-    if(listen(sock_inet, DEFAULT_BACKLOG) == -1)
+    if(listen(sock_inet, BACKLOG) == -1)
     {
         perror("Failed to listen on inet socket");
         return 8;
@@ -270,7 +269,7 @@ int setup_socket_inet(int port, struct in_addr inaddr)
 int setup_socket_unix()
 {
     struct sockaddr_un addr;
-    sprintf(addr.sun_path, "%s/%s.ipc", pwd, file_unix);
+    snprintf(addr.sun_path, UNIX_PATH_MAX, "%s/%s.ipc", pwd, file_unix);
     
     if((sock_unix = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
@@ -290,7 +289,7 @@ int setup_socket_unix()
         return 11;
     }
     
-    if(listen(sock_unix, DEFAULT_BACKLOG) == -1)
+    if(listen(sock_unix, BACKLOG) == -1)
     {
         perror("Failed to listen on unix socket");
         return 12;
@@ -396,8 +395,8 @@ int main(int argc, char *argv[])
             return 5;
         }
         
-        sprintf(buf, "%i\n", getpid());
-        write(ret, buf, strlen(buf));
+        snprintf(path, UNIX_PATH_MAX, "%i\n", getpid());
+        write(ret, path, strlen(path));
         
         close(0);
         //close(1);
