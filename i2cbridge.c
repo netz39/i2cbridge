@@ -33,7 +33,7 @@
 #include <sys/un.h>
 #include <arpa/inet.h>
 
-#include <wiringPi/wiringPiI2C.h>
+#include <wiringPiI2C.h>
 
 #include "i2cbridge.h"
 
