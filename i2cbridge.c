@@ -269,6 +269,7 @@ int setup_socket_inet(int port, struct in_addr inaddr)
 int setup_socket_unix()
 {
     struct sockaddr_un addr;
+    addr.sun_family = AF_UNIX;
     snprintf(addr.sun_path, UNIX_PATH_MAX, "%s/%s.ipc", pwd, file_unix);
     
     if((sock_unix = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
@@ -447,6 +448,7 @@ int main(int argc, char *argv[])
         }
         else if(pfds[0].revents & POLLIN)
         {
+            addrsize = sizeof(struct sockaddr_in);
             if((ret = accept(sock_inet, (struct sockaddr*)&addr_in, &addrsize)) == -1)
             {
                 perror("Failed to accept inet connection");
@@ -471,6 +473,7 @@ conadd:     if(con_add(ret) == -1)
         }
         else if(pfds[1].revents & POLLIN)
         {
+            addrsize = sizeof(struct sockaddr_un);
             if((ret = accept(sock_unix, (struct sockaddr*)&addr_un, &addrsize)) == -1)
             {
                 perror("Failed to accept unix connection");
