@@ -450,6 +450,8 @@ int main(int argc, char *argv[])
     {
         if(poll(pfds, 2+con_count, -1) == -1)
         {
+            if(errno == EINTR)
+                return 0;
             perror("Failed to poll");
             return 13;
         }
@@ -509,6 +511,10 @@ conadd:     if(con_add(ret) == -1)
                 switch(con_read(x))
                 {
                 case 1: // incomplete request
+                    break;
+                case 2: // shutdown
+                    con_del(x);
+                    x = con_count;
                     break;
                 case -1:
                     cons[x].res.status = ERROR(INTERNAL);
