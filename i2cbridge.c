@@ -253,6 +253,8 @@ void cleanup(int signal)
 int setup_socket_inet(int port, struct in_addr inaddr)
 {
     struct sockaddr_in addr;
+    int reuse;
+    
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
     addr.sin_addr = inaddr;
@@ -262,6 +264,9 @@ int setup_socket_inet(int port, struct in_addr inaddr)
         perror("Failed to create inet socket");
         return 6;
     }
+    
+    reuse = 1;
+    setsockopt(sock_inet, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int));
     
     if(bind(sock_inet, (struct sockaddr*)&addr, sizeof(struct sockaddr_in)) == -1)
     {
