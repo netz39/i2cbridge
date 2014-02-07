@@ -12,12 +12,12 @@ local: INCLUDE=-I$(HOME)/pro/lib/wiringPi/wiringPi
 local: LDFLAGS=-L$(HOME)/pro/lib/wiringPi/wiringPi -lwiringPi
 local: $(NAME)
 
-client: client_inet client_unix
+client: $(NAME)_iclient $(NAME)_uclient
 
-client_inet: client_inet.c
+$(NAME)_iclient: client_inet.c
 	gcc $(CFLAGS) -o $@ $<
 
-client_unix: client_unix.c
+$(NAME)_uclient: client_unix.c
 	gcc $(CFLAGS) -o $@ $<
 
 $(NAME): $(NAME).c
