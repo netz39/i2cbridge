@@ -80,8 +80,6 @@ int main(int argc, char *argv[])
         return -1;
     }
     
-    req.data = htons(req.data);
-    
     if((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
         perror("Failed to open socket");
@@ -125,7 +123,7 @@ int main(int argc, char *argv[])
     switch(res.status)
     {
     case I2CBRIDGE_ERROR_OK:
-        printf("response: ok\ndata: 0x%04hx\n", ntohs(res.data));
+        printf("response: ok\ndata: 0x%04hx\n", res.data);
         break;
     case I2CBRIDGE_ERROR_INTERNAL:
         printf("response: internal error\n");

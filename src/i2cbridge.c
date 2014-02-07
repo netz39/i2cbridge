@@ -166,8 +166,6 @@ int con_request(int num)
     struct con *con = &cons[num];
     int fd, ret;
     
-    con->req.data = ntohs(con->req.data);
-    
     printf("client request [%i]: %02hhx %02hhx %02hhx %04hx\n",
         pfds[2+num].fd, con->req.cmd, con->req.addr, con->req.reg, con->req.data);
     
@@ -211,7 +209,7 @@ int con_request(int num)
     }
     
     con->res.status = ERROR(OK);
-    con->res.data = htons(ret);
+    con->res.data = ret;
     
     return 0;
 }
