@@ -1,0 +1,97 @@
+.ds SP \\fB%PACKAGE%_iclient\\fP
+.
+.
+.TH "%PACKAGE%_iclient" 1 \
+    "%DATE%" \
+    "%PACKAGE_NAME% Version %PACKAGE_VERSION%"
+.
+.
+.SH NAME
+%PACKAGE%_iclient \- internet client for the i2c message relaying daemon
+.
+.
+.SH SYNOPSIS
+.
+.SY %PACKAGE%
+.OP \-p port
+.RI < dest >
+.RI < cmd >
+.RI < addr >
+.RI < reg >
+.RI [ data ]
+.YS
+.
+.
+.SH DESCRIPTION
+\*(SP is an internet client for the i2c message relaying daemon.
+
+.I dest
+is the host or IP address the i2cbridge daemon is running on.
+
+.I cmd
+is one of the following strings:
+.IP \(bu 2
+.I write8\t
+Write one byte of data. No data will be returned.
+.IP \(bu
+.I write16\t
+Write two bytes of data. No data will be returned.
+.IP \(bu
+.I read8\t
+Read one byte of data which will be returned. The
+.I data
+parameter if given is ignored.
+.IP \(bu
+.I read16\t
+Read two bytes of data which will be returned. The
+.I data
+parameter if given is ignored.
+.P
+
+.I addr
+is the i2c slave address. The address has to be specified in hex.
+
+.I reg
+is the i2c slave register address. The address has to be specified in hex.
+
+.I data
+is the payload used with write cmds. If
+.I data
+is not specified zero will be used.
+.I data
+has to be specified in hex.
+.
+.
+.SH OPTIONS
+.
+.IP "\fB-p\fR \fIport"
+Port to connect to the i2cbridge daemon. ( default
+.I %PORT%
+)
+.
+.
+.SH EXIT STATUS
+.
+\*(SP will return a non-null exit code if an error occurred.
+.
+.
+.SH SEE ALSO
+.
+.TP
+Homepage:
+.UR %PACKAGE_URL%
+.B upstream
+.UE
+.br
+.UR http://github.com/Yomin/netz39_rollladensteuerung
+.B fork
+.UE
+.
+.
+.SH AUTHOR
+.
+This manpage and the \*(SP program was written by
+.MT lordyomin@hivegate.net
+Martin Rödel aka Yomin
+.ME .
+\# EOF

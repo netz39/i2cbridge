@@ -1,0 +1,84 @@
+.ds SP \\fB%PACKAGE%\\fP
+.
+.
+.TH "%PACKAGE%" 1 \
+    "%DATE%" \
+    "%PACKAGE_NAME% Version %PACKAGE_VERSION%"
+.
+.
+.SH NAME
+%PACKAGE% \- i2c message relaying daemon
+.
+.
+.SH SYNOPSIS
+.
+.SY %PACKAGE%
+.OP \-f
+.OP \-p port
+.OP \-w pwd
+.OP \-l host
+.OP \-u name
+.YS
+.
+.
+.SH DESCRIPTION
+\*(SP is a daemon relaying i2c messages from multiple inet or unix
+clients to i2c bus and vice versa.
+.
+.
+.SH OPTIONS
+.
+.IP "\fB-f\fR"
+Start daemon in foreground mode.
+.IP "\fB-p\fR \fIport"
+Port daemon is listening on. ( default
+.I %PORT%
+)
+.IP "\fB-w\fR \fIpwd"
+Directory daemon is creating pid file and unix socket in. ( default
+.I %PWD%
+)
+.IP "\fB-l\fR \fIhost"
+Hostname or IP daemon is listening on. ( default
+.I anything
+)
+.IP "\fB-u\fR \fIname"
+Name daemon is creating unix socket file in
+.I working dir
+with. ( default
+.I %UNAME%
+)
+.
+.
+.SH EXIT STATUS
+.
+\*(SP will return a non-null exit code if an error occurred.
+.
+.
+.SH FILES
+.
+.TP
+.B %includedir%/%PACKAGE%.h
+Header file defining request and response structures and error codes.
+.
+.
+.SH SEE ALSO
+.
+.TP
+Homepage:
+.UR %PACKAGE_URL%
+.B upstream
+.UE
+.br
+.UR http://github.com/Yomin/netz39_rollladensteuerung
+.B fork
+.UE
+.
+.
+.SH AUTHOR
+.
+This manpage and the \*(SP program was written by
+.MT lordyomin@hivegate.net
+Martin Rödel aka Yomin
+.ME .
+\# EOF
