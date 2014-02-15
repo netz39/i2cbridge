@@ -13,6 +13,7 @@
 .SH SYNOPSIS
 .
 .SY %PACKAGE%
+.OP \-v
 .OP \-u path
 .RI < cmd >
 .RI < addr >
@@ -61,6 +62,8 @@ has to be specified in hex.
 .
 .SH OPTIONS
 .
+.IP "\fB-v\fR"
+Verbose messages.
 .IP "\fB-u\fR \fIpath"
 Path to the unix socket the i2cbridge daemon is listening on. ( default
 .I %PWD%/%UNAME%
@@ -69,7 +72,16 @@ Path to the unix socket the i2cbridge daemon is listening on. ( default
 .
 .SH EXIT STATUS
 .
-\*(SP will return a non-null exit code if an error occurred.
+\*(SP will return a negative exit code if an error occurred.
+On success 0 is returned and the received data printed to standard out.
+If an
+.B i2cbridge
+error occurred the (positive) error is returned.
+For
+.B i2cbridge
+error codes consult the
+.B i2cbridge
+man page.
 .
 .
 .SH SEE ALSO
@@ -83,6 +95,8 @@ Homepage:
 .UR http://github.com/Yomin/netz39_rollladensteuerung
 .B fork
 .UE
+.TP
+\fBi2cbridge\fR(1), \fBi2cbridge_iclient\fR(1)
 .
 .
 .SH AUTHOR

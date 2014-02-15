@@ -10,9 +10,11 @@
 
 #include "i2cbridge.h"
 
+#define printfv(f, ...) if(verbose) printf(f, #__VA_ARGS__)
+
 void usage(char *name)
 {
-    printf("Usage: %s [-u <unixpath>] <cmd> <addr> <reg> [<data>]\n", name);
+    printf("Usage: %s [-v] [-u <unixpath>] <cmd> <addr> <reg> [<data>]\n", name);
     printf("cmd: read8, read16, write8, write16\n");
     printf("addr/reg/data: hex\n");
     exit(-1);
@@ -22,18 +24,22 @@ int main(int argc, char *argv[])
 {
     int sock;
     char *path = I2CBRIDGE_PWD "/" I2CBRIDGE_UNIX;
+    int verbose = 0;
     
     int opt;
     struct sockaddr_un addr;
     struct i2cbridge_request req;
     struct i2cbridge_response res;
     
-    while((opt = getopt(argc, argv, "u:")) != -1)
+    while((opt = getopt(argc, argv, "vu:")) != -1)
     {
         switch(opt)
         {
         case 'u':
             path = optarg;
+            break;
+        case 'v':
+            verbose = 1;
             break;
         default:
             usage(argv[0]);
@@ -102,19 +108,20 @@ int main(int argc, char *argv[])
     switch(res.status)
     {
     case I2CBRIDGE_ERROR_OK:
-        printf("response: ok\ndata: 0x%04hx\n", res.data);
+        printfv("response: ok\ndata: 0x");
+        printf("%04hx\n", res.data);
         break;
     case I2CBRIDGE_ERROR_INTERNAL:
-        printf("response: internal error\n");
+        printfv("response: internal error\n");
         break;
     case I2CBRIDGE_ERROR_COMMAND:
-        printf("response: unknown command\n");
+        printfv("response: unknown command\n");
         break;
     case I2CBRIDGE_ERROR_ADDRESS:
-        printf("response: device with address not found\n");
+        printfv("response: device with address not found\n");
         break;
     case I2CBRIDGE_ERROR_I2C:
-        printf("response: error while accessing i2c bus\n");
+        printfv("response: error while accessing i2c bus\n");
         break;
     }
     

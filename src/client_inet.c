@@ -10,10 +10,11 @@
 
 #define STR(X) #X
 #define STREXP(X) STR(X)
+#define printfv(f, ...) if(verbose) printf(f, #__VA_ARGS__)
 
 void usage(char *name)
 {
-    printf("Usage: %s [-p <port>] <dest> <cmd> <addr> <reg> [<data>]\n", name);
+    printf("Usage: %s [-v] [-p <port>] <dest> <cmd> <addr> <reg> [<data>]\n", name);
     printf("dest: ip, hostname\n");
     printf("cmd: read8, read16, write8, write16\n");
     printf("addr/reg/data: hex\n");
@@ -24,13 +25,14 @@ int main(int argc, char *argv[])
 {
     int sock;
     char *dest, *port = STREXP(I2CBRIDGE_PORT);
+    int verbose = 0;
     
     int opt, ret;
     struct addrinfo hints, *hres, *iter;
     struct i2cbridge_request req;
     struct i2cbridge_response res;
     
-    while((opt = getopt(argc, argv, "p:")) != -1)
+    while((opt = getopt(argc, argv, "vp:")) != -1)
     {
         switch(opt)
         {
@@ -41,6 +43,9 @@ int main(int argc, char *argv[])
                 return -1;
             }
             port = optarg;
+            break;
+        case 'v':
+            verbose = 1;
             break;
         default:
             usage(argv[0]);
@@ -123,19 +128,20 @@ int main(int argc, char *argv[])
     switch(res.status)
     {
     case I2CBRIDGE_ERROR_OK:
-        printf("response: ok\ndata: 0x%04hx\n", res.data);
+        printfv("response: ok\ndata: 0x");
+        printf("%04hx\n", res.data);
         break;
     case I2CBRIDGE_ERROR_INTERNAL:
-        printf("response: internal error\n");
+        printfv("response: internal error\n");
         break;
     case I2CBRIDGE_ERROR_COMMAND:
-        printf("response: unknown command\n");
+        printfv("response: unknown command\n");
         break;
     case I2CBRIDGE_ERROR_ADDRESS:
-        printf("response: device with address not found\n");
+        printfv("response: device with address not found\n");
         break;
     case I2CBRIDGE_ERROR_I2C:
-        printf("response: error while accessing i2c bus\n");
+        printfv("response: error while accessing i2c bus\n");
         break;
     }
     

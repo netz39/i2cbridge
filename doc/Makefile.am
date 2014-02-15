@@ -14,6 +14,11 @@ SUBST = " \
     s^%PORT%^$(shell grep -i @PACKAGE@_port $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
     s^%PWD%^$(shell grep -i @PACKAGE@_pwd $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)@PACKAGE@^g; \
     s^%UNAME%^$(shell grep -i @PACKAGE@_unix $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
+    s^%ERROR_OK%^$(shell grep -i @PACKAGE@_ERROR_OK $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
+    s^%ERROR_INTERNAL%^$(shell grep -i @PACKAGE@_ERROR_INTERNAL $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
+    s^%ERROR_COMMAND%^$(shell grep -i @PACKAGE@_ERROR_COMMAND $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
+    s^%ERROR_ADDRESS%^$(shell grep -i @PACKAGE@_ERROR_ADDRESS $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
+    s^%ERROR_I2C%^$(shell grep -i @PACKAGE@_ERROR_I2C $(top_srcdir)/src/@PACKAGE@.h|tr -s " "|cut -d" " -f3)^g; \
 "
 
 % : %.in

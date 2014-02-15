@@ -59,6 +59,29 @@ with. ( default
 )
 .
 .
+.SH ERROR CODES
+.
+Clients communicating will receive one of the following error codes:
+.IP \(bu 2
+.I %ERROR_OK%: ok\t
+No error occurred.
+.IP \(bu
+.I %ERROR_INTERNAL%: internal\t
+.B i2cbridge
+internal error occured.
+.IP \(bu
+.I %ERROR_COMMAND%: command\t
+Wrong request command specified.
+.IP \(bu
+.I %ERROR_ADDRESS%: address\t
+No i2c slave with address found.
+.IP \(bu
+.I %ERROR_I2C%: i2c\t
+i2c bus access error.
+.P
+
+.
+.
 .SH EXIT STATUS
 .
 \*(SP will return a non-null exit code if an error occurred.
@@ -82,6 +105,8 @@ Homepage:
 .UR http://github.com/Yomin/netz39_rollladensteuerung
 .B fork
 .UE
+.TP
+\fBi2cbridge_iclient\fR(1), \fBi2cbridge_uclient\fR(1)
 .
 .
 .SH AUTHOR
