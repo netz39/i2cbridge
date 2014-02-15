@@ -426,7 +426,7 @@ int main(int argc, char *argv[])
         }
         
         snprintf(path, UNIX_PATH_MAX, "%i\n", getpid());
-        write(ret, path, strlen(path));
+        write(lock, path, strlen(path));
         
         close(0);
         if(!verbose)
