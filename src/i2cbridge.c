@@ -317,7 +317,7 @@ int setup_socket_unix()
 int main(int argc, char *argv[])
 {
     int port = I2CBRIDGE_PORT;
-    int daemon = 1;
+    int daemon = 1, service = 0;
     struct in_addr inaddr;
     
     int ret, x;
@@ -337,12 +337,18 @@ int main(int argc, char *argv[])
     cons = 0;
     i2cs = 0;
     
-    while((ret = getopt(argc, argv, "hfp:w:l:u:")) != -1)
+    while((ret = getopt(argc, argv, "hfiup:w:l:s:")) != -1)
     {
         switch(ret)
         {
         case 'f':
             daemon = 0;
+            break;
+        case 'i':
+            service |= 1;
+            break;
+        case 'u':
+            service |= 2;
             break;
         case 'p':
             if(strspn(optarg, "1234567890") != strlen(optarg))
@@ -362,14 +368,20 @@ int main(int argc, char *argv[])
                 return 1;
             }
             break;
-        case 'u':
+        case 's':
             file_unix = optarg;
             break;
         case 'h':
         default:
-            printf("Usage: %s [-f] [-p <port>] [-w <pwd>] [-l <ip>] [-u <unix>] \n", argv[0]);
+            printf("Usage: %s [-f] [-i] [-u] [-p <port>] [-w <pwd>] [-l <ip>] [-s <unix>] \n", argv[0]);
             return 0;
         }
+    }
+    
+    if(!service)
+    {
+        printf("Neither -i nor -u specified\n");
+        return 0;
     }
     
     if(mkdir(pwd, 0766) == -1 && errno != EEXIST)
@@ -424,9 +436,9 @@ int main(int argc, char *argv[])
     signal(SIGTERM, cleanup);
     signal(SIGINT, cleanup);
     
-    if((ret = setup_socket_inet(port, inaddr)))
+    if(service&1 && (ret = setup_socket_inet(port, inaddr)))
         return ret;
-    if((ret = setup_socket_unix()))
+    if(service&2 && (ret = setup_socket_unix()))
         return ret;
     
     i2c_count = 0;
@@ -439,9 +451,9 @@ int main(int argc, char *argv[])
     pfds = malloc(con_cap*sizeof(struct pollfd));
     
     pfds[0].fd = sock_inet;
-    pfds[0].events = POLLIN;
+    pfds[0].events = service&1 ? POLLIN : POLLNVAL;
     pfds[1].fd = sock_unix;
-    pfds[1].events = POLLIN;
+    pfds[1].events = service&2 ? POLLIN : POLLNVAL;
     
     while(1)
     {

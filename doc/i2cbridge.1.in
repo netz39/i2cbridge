@@ -14,10 +14,12 @@
 .
 .SY %PACKAGE%
 .OP \-f
+.OP \-i
+.OP \-u
 .OP \-p port
 .OP \-w pwd
 .OP \-l host
-.OP \-u name
+.OP \-s name
 .YS
 .
 .
@@ -30,6 +32,10 @@ clients to i2c bus and vice versa.
 .
 .IP "\fB-f\fR"
 Start daemon in foreground mode.
+.IP "\fB-i\fR"
+Listening on inet socket.
+.IP "\fB-u\fR"
+Listening on inet socket.
 .IP "\fB-p\fR \fIport"
 Port daemon is listening on. ( default
 .I %PORT%
@@ -42,7 +48,7 @@ Directory daemon is creating pid file and unix socket in. ( default
 Hostname or IP daemon is listening on. ( default
 .I anything
 )
-.IP "\fB-u\fR \fIname"
+.IP "\fB-s\fR \fIname"
 Name daemon is creating unix socket file in
 .I working dir
 with. ( default
