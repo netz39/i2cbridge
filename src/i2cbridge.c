@@ -223,7 +223,7 @@ void cleanup(int signal)
     if(sock_unix)
     {
         close(sock_unix);
-        snprintf(path, UNIX_PATH_MAX, "%s/%s.ipc", pwd, file_unix);
+        snprintf(path, UNIX_PATH_MAX, "%s/%s", pwd, file_unix);
         unlink(path);
     }
     if(lock)
@@ -285,7 +285,7 @@ int setup_socket_unix()
 {
     struct sockaddr_un addr;
     addr.sun_family = AF_UNIX;
-    snprintf(addr.sun_path, UNIX_PATH_MAX, "%s/%s.ipc", pwd, file_unix);
+    snprintf(addr.sun_path, UNIX_PATH_MAX, "%s/%s", pwd, file_unix);
     
     if((sock_unix = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {

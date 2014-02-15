@@ -28,7 +28,7 @@
 #define I2CBRIDGE_NAME  "i2cbridge"
 #define I2CBRIDGE_PORT  3939
 #define I2CBRIDGE_PWD   "/var/lib/" I2CBRIDGE_NAME
-#define I2CBRIDGE_UNIX  "unix"
+#define I2CBRIDGE_UNIX  "unix.ipc"
 
 #define I2CBRIDGE_CMD_READ8   0
 #define I2CBRIDGE_CMD_READ16  1
