@@ -16,6 +16,7 @@
 .OP \-f
 .OP \-i
 .OP \-u
+.OP \-v
 .OP \-p port
 .OP \-w pwd
 .OP \-l host
@@ -36,6 +37,8 @@ Start daemon in foreground mode.
 Listening on inet socket.
 .IP "\fB-u\fR"
 Listening on inet socket.
+.IP "\fB-v\fR"
+Verbose messages.
 .IP "\fB-p\fR \fIport"
 Port daemon is listening on. ( default
 .I %PORT%

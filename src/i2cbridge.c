@@ -317,7 +317,7 @@ int setup_socket_unix()
 int main(int argc, char *argv[])
 {
     int port = I2CBRIDGE_PORT;
-    int daemon = 1, service = 0;
+    int daemon = 1, verbose = 0, service = 0;
     struct in_addr inaddr;
     
     int ret, x;
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
     cons = 0;
     i2cs = 0;
     
-    while((ret = getopt(argc, argv, "hfiup:w:l:s:")) != -1)
+    while((ret = getopt(argc, argv, "hfiuvp:w:l:s:")) != -1)
     {
         switch(ret)
         {
@@ -349,6 +349,9 @@ int main(int argc, char *argv[])
             break;
         case 'u':
             service |= 2;
+            break;
+        case 'v':
+            verbose = 1;
             break;
         case 'p':
             if(strspn(optarg, "1234567890") != strlen(optarg))
@@ -373,7 +376,7 @@ int main(int argc, char *argv[])
             break;
         case 'h':
         default:
-            printf("Usage: %s [-f] [-i] [-u] [-p <port>] [-w <pwd>] [-l <ip>] [-s <unix>] \n", argv[0]);
+            printf("Usage: %s [-f] [-i] [-u] [-v] [-p <port>] [-w <pwd>] [-l <ip>] [-s <unix>] \n", argv[0]);
             return 0;
         }
     }
@@ -426,11 +429,11 @@ int main(int argc, char *argv[])
         write(ret, path, strlen(path));
         
         close(0);
-        //close(1);
-        //close(2);
+        if(!verbose)
+            close(1);
         ret = open("/dev/null", O_RDWR);
-        //dup(ret);
-        //dup(ret);
+        if(!verbose)
+            dup(ret);
     }
     
     signal(SIGTERM, cleanup);
