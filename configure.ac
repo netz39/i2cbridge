@@ -25,5 +25,7 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([memset mkdir socket strchr strerror strspn])
 
+CFLAGS="$CFLAGS -Wall -Wpedantic -std=c99"
+
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
 AC_OUTPUT

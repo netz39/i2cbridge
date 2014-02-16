@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#define _BSD_SOURCE
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -28,10 +30,12 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <getopt.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <linux/un.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
 
 #include <wiringPiI2C.h>
 
