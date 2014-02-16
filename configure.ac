@@ -7,7 +7,7 @@ AC_CONFIG_SRCDIR([src/i2cbridge.c])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for libraries.
-AC_CHECK_LIB([wiringPi], [wiringPiI2CSetup], [], AC_MSG_ERROR([wiringPi lib not found]))
+AC_CHECK_LIB([wiringPi], [wiringPiI2CSetup], [FOO=], AC_MSG_ERROR([wiringPi lib not found]))
 
 # Checks for header files.
 AC_CHECK_HEADERS([wiringPi.h arpa/inet.h fcntl.h netdb.h stdint.h stdlib.h string.h sys/socket.h unistd.h],
