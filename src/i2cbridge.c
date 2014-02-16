@@ -281,7 +281,7 @@ int setup_socket_inet(int port, struct in_addr inaddr)
     return 0;
 }
 
-int setup_socket_unix()
+int setup_socket_unix(int mode)
 {
     struct sockaddr_un addr;
     addr.sun_family = AF_UNIX;
@@ -305,10 +305,16 @@ int setup_socket_unix()
         return 11;
     }
     
+    if(mode != -1 && chmod(addr.sun_path, mode) == -1)
+    {
+        perror("Failed to set permissions on unix socket");
+        return 12;
+    }
+    
     if(listen(sock_unix, BACKLOG) == -1)
     {
         perror("Failed to listen on unix socket");
-        return 12;
+        return 13;
     }
     
     return 0;
@@ -317,7 +323,7 @@ int setup_socket_unix()
 int main(int argc, char *argv[])
 {
     int port = I2CBRIDGE_PORT;
-    int daemon = 1, verbose = 0, service = 0;
+    int daemon = 1, verbose = 0, service = 0, mode = -1;
     struct in_addr inaddr;
     
     int ret, x;
@@ -337,7 +343,7 @@ int main(int argc, char *argv[])
     cons = 0;
     i2cs = 0;
     
-    while((ret = getopt(argc, argv, "hfiuvp:w:l:s:")) != -1)
+    while((ret = getopt(argc, argv, "hfiuvp:w:l:s:m:")) != -1)
     {
         switch(ret)
         {
@@ -374,9 +380,17 @@ int main(int argc, char *argv[])
         case 's':
             file_unix = optarg;
             break;
+        case 'm':
+            if(strspn(optarg, "12345670") != strlen(optarg))
+            {
+                printf("mode not octal\n");
+                return 1;
+            }
+            mode = strtol(optarg, 0, 8);
+            break;
         case 'h':
         default:
-            printf("Usage: %s [-f] [-i] [-u] [-v] [-p <port>] [-w <pwd>] [-l <ip>] [-s <unix>] \n", argv[0]);
+            printf("Usage: %s [-f] [-i] [-u] [-v] [-p <port>] [-w <pwd>] [-l <ip>] [-s <unix>] [-m <mode>]\n", argv[0]);
             return 0;
         }
     }
@@ -387,7 +401,7 @@ int main(int argc, char *argv[])
         return 0;
     }
     
-    if(mkdir(pwd, 0766) == -1 && errno != EEXIST)
+    if(mkdir(pwd, 0755) == -1 && errno != EEXIST)
     {
         perror("Failed to create working dir");
         return 1;
@@ -441,7 +455,7 @@ int main(int argc, char *argv[])
     
     if(service&1 && (ret = setup_socket_inet(port, inaddr)))
         return ret;
-    if(service&2 && (ret = setup_socket_unix()))
+    if(service&2 && (ret = setup_socket_unix(mode)))
         return ret;
     
     i2c_count = 0;
@@ -465,7 +479,7 @@ int main(int argc, char *argv[])
             if(errno == EINTR)
                 return 0;
             perror("Failed to poll");
-            return 13;
+            return 14;
         }
         if(pfds[0].revents & POLLHUP || pfds[0].revents & POLLERR)
         {
@@ -496,7 +510,7 @@ conadd:     if(con_add(ret) == -1)
         {
             fprintf(stderr, "hup/error on unix socket\n");
             close(sock_unix);
-            if((ret = setup_socket_unix()))
+            if((ret = setup_socket_unix(mode)))
             {
                 cleanup(0);
                 return ret;
