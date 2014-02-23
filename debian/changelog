@@ -1,0 +1,8 @@
+i2cbridge (0.3-1) UNRELEASED; urgency=low
+
+  * Initial release.
+  * Now with source code.
+  * Corrected the standards version.
+  * Added autogen.sh to debian/rules
+
+ --  <pi@platon.n39.eu>  Sun, 16 Feb 2014 17:54:56 +0100

@@ -1,0 +1,5 @@
+i2cbridge/
+autoreconf.after
+autoreconf.before
+i2cbridge.debhelper.log
+i2cbridge.substvars

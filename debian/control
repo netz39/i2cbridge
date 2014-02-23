@@ -1,0 +1,13 @@
+Source: i2cbridge
+Maintainer: Stefan Haun <tux@netz39.de>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9), dh-autoreconf (>= 7)
+
+Package: i2cbridge
+Architecture: armhf
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Centralized control over the RPi I²C bus.
+ Daemon for controlled access to the Raspberry Pi I²C bus and clients to talk to the daemon. 
+ (Currently, this package also contains the -dev section.)

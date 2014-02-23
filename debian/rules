@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+#override_dh_auto_configure:
+#	$(DEB_SRCDIR)/autogen.sh $(configure_flags)
+#	$(DEB_SRCDIR)/configure $(configure_flags)
+
+
+#DEB_CONFIGURE_SCRIPT = $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
+
+%:
+	dh  $@ --with autoreconf
